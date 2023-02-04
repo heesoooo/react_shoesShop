@@ -20,8 +20,9 @@
 
 /* main visual */
 .main-bg {
-	height: 550px;
+	height: 400px;
 	background: #fff url('./img/main_bg.png') no-repeat 50%;
+	background-size: contain;
 }
 
 
@@ -106,4 +107,69 @@
 	left: 50%; top: 50%;
 	transform: translate(-50%);
 	background: rgba(0,0,0,.5);
+}
+
+/* detail */
+.tab-detail {
+	margin-bottom: 50px;
+	padding: 20px 30px;
+}
+
+/* animation */
+.fade-start {
+	opacity: 0;
+}
+.fade-end {
+	opacity: 1;
+	transition: opacity 0.5s;
+}
+
+.scale-start {
+	transform: scale(0);
+}
+.scale-end {
+	transform: scale(1);
+	transition: all 1s;
+}
+
+/* page title */
+.page-title {
+	padding: 30px 0;
+	color: rgba(197, 91, 220, 1);;
+	font-size: 30px;
+	font-weight: bold;
+	text-align: center;
+	letter-spacing: -.5px;
+}
+
+/* cart */
+.tbl-cart {
+	width: 96%;
+	margin: 0 2%;
+	border: 20px solid rgba(173, 132, 254, .2);
+}
+.tbl-cart thead th,
+.tbl-cart tbody td {
+	text-align: center;
+}
+.btn-count {
+	display: inline-block;
+	padding: 0;
+	vertical-align: middle;
+	width: 20px;
+	height: 20px;
+	line-height: 16px;
+	outline: none;
+	border: 1px solid #bbb;
+	background: rgba(173, 132, 254, .1);
+	text-align: center;
+	border-radius: 3px;
+	font-size: 15px;
+	font-weight: bold;
+}
+.cart-count {
+	display: inline-block;
+	vertical-align: middle;
+	width: 30px;
+	text-align: center;
 }

@@ -1,21 +1,20 @@
 /* eslint-disable */
 import './App.css';
-//import 'bootstrap/dist/css/bootstrap.min.css'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navbar, Nav } from 'react-bootstrap';
-import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import data from './shoesData.js';
 import Detail from './pages/Detail.js';
+import Cart from './pages/Cart.js';
 import Error404 from './pages/Error404.js';
 import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 
 function App() {
-
 	let [shoes, setShoes] = useState(data);
 	let [clickData, setClickData] = useState(0);
 	let [loading, setLoading] = useState(false);
 	let navigate = useNavigate();
-
 
 	// 상품 리스트 더보기 버튼 클릭시
 	const handleClick = () => {
@@ -37,6 +36,12 @@ function App() {
 			})
 		}, 200)
 	};
+	
+	let result = useQuery('welcome', ()=>
+		axios.get('https://codingapple1.github.io/userdata.json').then((a)=>{
+			return a.data
+		})
+	)
 
 	return (
 		<div className="App">
@@ -45,8 +50,15 @@ function App() {
 				<Navbar.Brand href="/">ShoesShop</Navbar.Brand>
 				<Navbar.Collapse>
 					<Nav onClick={()=>{navigate('/')}} className="nav-item">홈</Nav>
-					<Nav onClick={()=>{navigate('/detail')}} className="nav-item">상세페이지</Nav>
+					<Nav onClick={()=>{navigate('/detail/0')}} className="nav-item">상세페이지</Nav>
+					<Nav onClick={()=>{navigate('/Cart')}} className="nav-item">장바구니</Nav>
 				</Navbar.Collapse>
+				<Nav className="ms-auto">
+					{ result.isLoading && '로딩중' }
+					{ result.data && result.data.name }
+					{ result.error && '에러남' }
+					<span className="d-inline-block px-3"></span>
+				</Nav>
 			</Navbar>			
 
 			<Routes>
@@ -83,22 +95,23 @@ function App() {
 
 					</>
 				} />
-				<Route path="/detail/:id" element={<Detail shoes={shoes}/>} />
+				{/* 상세페이지 */}
+				<Route path="/detail/:id" element={<Detail shoes={shoes}/>} />			
+				
+				{/* 장바구니 */}
+				<Route path="/cart" element={<Cart/>} />
 
 				{/* 404 error */}
 				<Route path="*" element={ <Error404 /> } />
 			</Routes>
-
-			
-
-
 		</div>
 	);
 }
 
 function Item(props) {
+	let navigate = useNavigate();
 	return (
-		<div className="col-md-4 text-center">
+		<div className="col-md-4 text-center" onClick={()=>{ navigate('/detail/' + (props.i - 1)) }}>
 			<img src={process.env.PUBLIC_URL + '/shoes' + props.i + '.jpg'} alt="shoes" width = "95%" />
 			<h4>{props.shoes.title}</h4>
 			<p>{props.shoes.price}</p>
